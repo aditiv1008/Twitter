@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,15 +34,14 @@ public class TimelineActivity extends AppCompatActivity {
     RecyclerView rvTweets;
     List<Tweet> tweets;
     TweetsAdapter adapter;
+    private SwipeRefreshLayout swipeContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        client = TwitterApp.getRestClient(this);
-
         //find the recycler view
-
         rvTweets = findViewById(R.id.rvTweets);
         //init the list of tweets and adapter
         tweets = new ArrayList<>();
@@ -49,8 +49,50 @@ public class TimelineActivity extends AppCompatActivity {
         //Recyler view setup: layout manager and the adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
-       populateHomeTimeline();
 
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                fetchTimelineAsync(0);
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        client = TwitterApp.getRestClient(this);
+
+        fetchTimelineAsync(0);
+    }
+
+    public void fetchTimelineAsync(int page) {
+            // Send the network request to fetch the updated data
+            // `client` here is an instance of Android Async HTTP
+            // getHomeTimeline is an example endpoint.
+            client.getHomeTimeline(new JsonHttpResponseHandler() {
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    try {
+                        adapter.clear();
+                        tweets.addAll(Tweet.fromJsonArray(json.jsonArray));
+                        adapter.notifyDataSetChanged();
+                        swipeContainer.setRefreshing(false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Log.d("DEBUG", "Fetch timeline error: " + throwable.toString());
+                }
+
+
+            });
     }
 
     @Override
@@ -88,31 +130,6 @@ public class TimelineActivity extends AppCompatActivity {
             rvTweets.smoothScrollToPosition(0);
         }
         super.onActivityResult(requestCode, resultCode, data);
-
-    }
-
-    private void populateHomeTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.i(TAG, "onSuccess!" + json.toString());
-                JSONArray jsonArray = json.jsonArray;
-                try {
-                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
-                    adapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    Log.e(TAG, "Json exception", e);
-                }
-            }
-            @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.i(TAG, "onFailure!" + response, throwable);
-
-            }
-        });
-
-
-
 
     }
 
