@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ import okhttp3.Headers;
 public class TimelineActivity extends AppCompatActivity {
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
+    private EndlessRecyclerViewScrollListener rvScrollListener;
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
@@ -46,6 +48,8 @@ public class TimelineActivity extends AppCompatActivity {
         //init the list of tweets and adapter
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, tweets);
+        LinearLayoutManager lManager = new LinearLayoutManager(this);
+
         //Recyler view setup: layout manager and the adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
@@ -67,8 +71,21 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         client = TwitterApp.getRestClient(this);
+        ActionBar actionBar = getSupportActionBar(); // or getActionBar();
+
+        //String title = actionBar.getTitle().toString(); // get the title
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_launcher_twitter_round);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         fetchTimelineAsync(0);
+        rvScrollListener = new EndlessRecyclerViewScrollListener(lManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+            }
+        };
     }
 
     public void fetchTimelineAsync(int page) {
@@ -81,14 +98,17 @@ public class TimelineActivity extends AppCompatActivity {
                         adapter.clear();
                         tweets.addAll(Tweet.fromJsonArray(json.jsonArray));
                         adapter.notifyDataSetChanged();
-                        swipeContainer.setRefreshing(false);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    swipeContainer.setRefreshing(false);
+
                 }
 
                 public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                     Log.d("DEBUG", "Fetch timeline error: " + throwable.toString());
+                    swipeContainer.setRefreshing(false);
+
                 }
 
 
