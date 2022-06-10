@@ -2,10 +2,11 @@
 <resources>
 
     <string name="app_name">SimpleTweet</string>
-    <string name="login_label">Log in</string>
+    <string name="login_label">Connect to Twitter</string>
     <string name="logout_label">Log out</string>
     <string name="intent_scheme">oauth</string>
     <string name="intent_host">cprest</string>
     <string name="tweet">Tweet</string>
+    <color name="twitter_color">#00acee</color>
 
 </resources>

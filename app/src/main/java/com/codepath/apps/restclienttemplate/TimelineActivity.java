@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -72,11 +73,13 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
         client = TwitterApp.getRestClient(this);
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
+        //getSupportActionBar().setTitle("Twitter"); // set the top title
+       // String title = actionBar.getTitle().toString(); // get the title
 
         //String title = actionBar.getTitle().toString(); // get the title
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_launcher_twitter_round);
+      getSupportActionBar().setLogo(R.drawable.transparent2);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         fetchTimelineAsync(0);
@@ -92,6 +95,11 @@ public class TimelineActivity extends AppCompatActivity {
             // Send the network request to fetch the updated data
             // `client` here is an instance of Android Async HTTP
             // getHomeTimeline is an example endpoint.
+        // on some click or some loading we need to wait for...
+        ProgressBar pb = (ProgressBar) findViewById(R.id.pbLoading);
+        pb.setVisibility(ProgressBar.VISIBLE);
+// run a background job and once complete
+
             client.getHomeTimeline(new JsonHttpResponseHandler() {
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
                     try {
@@ -113,6 +121,7 @@ public class TimelineActivity extends AppCompatActivity {
 
 
             });
+        pb.setVisibility(ProgressBar.INVISIBLE);
     }
 
     @Override
