@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/tweet">
+    android:id="@+id/tweet"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
 
     <ImageView
@@ -62,18 +62,39 @@
         android:id="@+id/ibFavorite"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:backgroundTint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@android:drawable/btn_star"
-        app:layout_constraintTop_toBottomOf="@id/ivPostedPicture"
         app:layout_constraintLeft_toRightOf="@id/ivProfileImage"
-        />
+        app:layout_constraintTop_toBottomOf="@id/ivPostedPicture"
+        app:srcCompat="@android:drawable/btn_star"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/tvFavoriteCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="0"
         app:layout_constraintStart_toEndOf="@+id/ibFavorite"
         app:layout_constraintTop_toTopOf="@+id/ibFavorite" />
+
+    <ImageButton
+        android:id="@+id/ibReply"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="60dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintStart_toEndOf="@+id/tvFavoriteCount"
+        app:layout_constraintTop_toBottomOf="@+id/ivPostedPicture"
+        app:srcCompat="@android:drawable/ic_menu_send" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="209dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

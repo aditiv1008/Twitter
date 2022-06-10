@@ -5,7 +5,6 @@ import android.content.Context;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.oauth.OAuthBaseClient;
-import com.github.scribejava.apis.FlickrApi;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
 
@@ -76,9 +75,20 @@ public class TwitterClient extends OAuthBaseClient {
 
 	}
 
+	public void replyToTweet( String idDfTweetToReplyTo, String tweetContent, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/update.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("status", tweetContent);
+		params.put("in_reply_to_status_id", idDfTweetToReplyTo);
+
+		client.post(apiUrl, params, "",  handler);
+
+
+	}
+
 	public void favorite(String tweetId, JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("favorites/create.json" +
-				"\n");
+		String apiUrl = getApiUrl("favorites/create.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("id", tweetId);

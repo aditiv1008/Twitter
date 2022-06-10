@@ -1,6 +1,8 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,9 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
+import org.parceler.Parcels;
+
+import java.sql.Time;
 import java.util.List;
 
 import okhttp3.Headers;
@@ -79,6 +84,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvTimeStamp;
         TextView tvFavoriteCount;
         ImageButton ibFavorite;
+        ImageButton ibReply;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,6 +95,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
             ibFavorite = itemView.findViewById(R.id.ibFavorite);
             tvFavoriteCount = itemView.findViewById(R.id.tvFavoriteCount);
+            ibReply = itemView.findViewById(R.id.ibReply);
 
 
         }
@@ -99,6 +106,25 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName.setText((tweet.user.screenName));
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
             tvFavoriteCount.setText(String.valueOf(tweet.favCount));
+           Drawable newReply = context.getDrawable((android.R.drawable.ic_menu_send));
+            ibReply.setImageDrawable(newReply);
+
+            ibReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //pop up a compose screen
+                    //its gonna be a brand new tweet but it'll have an extra attribute
+                    // extra atrribute: "in_reply_to_status_id"
+
+                    Intent i = new Intent(context, ComposeActivity.class);
+                    i.putExtra("should_reply_to_tweet", true);
+                   i.putExtra("id_of_tweet_to_reply_to", tweet.id_str);
+                   i.putExtra("screenname_of_tweet_to_reply_to", tweet.user.screenName);
+                   // i.putExtra("tweet_to_reply_to", Parcels.wrap(tweet));
+                   ((Activity) context).startActivityForResult(i, TimelineActivity.REQUEST_CODE);
+
+                }
+            });
 
             if(tweet.isFavorited) {
                 Drawable newImage = context.getDrawable((android.R.drawable.btn_star_big_on));

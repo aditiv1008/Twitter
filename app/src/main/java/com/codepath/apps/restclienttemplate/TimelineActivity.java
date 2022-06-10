@@ -31,7 +31,7 @@ import okhttp3.Headers;
 
 public class TimelineActivity extends AppCompatActivity {
     public static final String TAG = "TimelineActivity";
-    private final int REQUEST_CODE = 20;
+    public static final int REQUEST_CODE = 20;
     private EndlessRecyclerViewScrollListener rvScrollListener;
     TwitterClient client;
     RecyclerView rvTweets;
