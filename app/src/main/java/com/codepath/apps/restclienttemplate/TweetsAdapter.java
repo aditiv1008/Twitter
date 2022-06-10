@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import java.util.List;
+
+import okhttp3.Headers;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
     Context context;
@@ -94,6 +98,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvTimeStamp.setText(tweet.getFormattedTimestamp());
             tvScreenName.setText((tweet.user.screenName));
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            tvFavoriteCount.setText(String.valueOf(tweet.favCount));
+
+            if(tweet.isFavorited) {
+                Drawable newImage = context.getDrawable((android.R.drawable.btn_star_big_on));
+                ibFavorite.setImageDrawable(newImage);
+            } else {
+                Drawable newImage = context.getDrawable((android.R.drawable.btn_star_big_off));
+                ibFavorite.setImageDrawable(newImage);
+            }
 
             if (tweet.media != "none") {
                 ivPostedPicture.setVisibility(View.VISIBLE);
@@ -105,17 +118,58 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     //if not already favorited
-                    // tell Twitter I want to favorite this
-                    //change drawable to btn_big_star_on
-                    //increment text inside tvFavoriteCount
+                    if(!tweet.isFavorited) {
 
+
+                    // tell Twitter I want to favorite this
+                    TwitterApp.getRestClient(context).favorite((tweet.id_str), new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+
+                        }
+                    });
+
+                    //change drawable to btn_big_star_on
+
+                    //increment text inside tvFavoriteCount
+                        tweet.isFavorited = true;
+                        Drawable newImage = context.getDrawable((android.R.drawable.btn_star_big_on));
+                       ibFavorite.setImageDrawable(newImage);
+
+                      tweet.favCount++;
+                       tvFavoriteCount.setText(String.valueOf(tweet.favCount));
+                    }
 
                     //else if already Favorited
+                    else {
+
+
                         //tell Twitter I want to unfavorite this
+                        TwitterApp.getRestClient(context).unfavorite((tweet.id_str), new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+
+                            }
+                        });
                         //change the drawable back to btn_star_big_off
                         //decrement the text inside tvFavoriteCount
+                        tweet.isFavorited = false;
+                        Drawable newImage = context.getDrawable((android.R.drawable.btn_star_big_off));
+                        ibFavorite.setImageDrawable(newImage);
+                        tweet.favCount--;
+                        tvFavoriteCount.setText(String.valueOf(tweet.favCount));
 
-
+                    }
 
 
 

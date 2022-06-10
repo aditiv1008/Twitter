@@ -23,22 +23,36 @@ public class Tweet {
     public String createdAt;
     public User user;
     public String media;
+    public boolean isFavorited;
+    public boolean isRetweeted;
     public long id;
+    public String id_str;
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
     private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
+    public int favCount;
+    public int rTcount;
 
 
-    //empty contrustor needed by Parceler library
+    //empty constructor needed by Parceler library
     public Tweet() {}
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
+        if(jsonObject.has("retweeted_status")) {
+            return null;
+        }
+
         Tweet tweet = new Tweet();
+        tweet.isFavorited = jsonObject.getBoolean("favorited");
+        tweet.isRetweeted = jsonObject.getBoolean("retweeted");
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.id = jsonObject.getLong("id");
+        tweet.id_str = jsonObject.getString("id_str");
+        tweet.favCount = jsonObject.getInt("favorite_count");
+        tweet.rTcount = jsonObject.getInt("retweet_count");
 
 
      /* JSONObject tEntities = jsonObject.getJSONObject("entities");
@@ -59,28 +73,18 @@ public class Tweet {
             tweet.media  =  jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        return tweet;
-
-
+      return tweet;
     }
-
-
 
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            tweets.add(fromJson(jsonArray.getJSONObject(i)));
+            Tweet newTweet = fromJson(jsonArray.getJSONObject(i));
+            //tweets.add(fromJson(jsonArray.getJSONObject(i)));
+            if (newTweet != null) {
+                tweets.add(newTweet);
+            }
+
         }
         return tweets;
     }
