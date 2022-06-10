@@ -11,7 +11,7 @@
         android:name=".TwitterApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_twitter_round"
-        android:label=""
+        android:label="Twitter"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
@@ -29,7 +29,6 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>

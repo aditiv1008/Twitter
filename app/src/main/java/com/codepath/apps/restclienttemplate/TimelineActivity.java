@@ -73,14 +73,9 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
         client = TwitterApp.getRestClient(this);
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
-        //getSupportActionBar().setTitle("Twitter"); // set the top title
-       // String title = actionBar.getTitle().toString(); // get the title
-
-        //String title = actionBar.getTitle().toString(); // get the title
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-      getSupportActionBar().setLogo(R.drawable.transparent2);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
 
         rvScrollListener = new EndlessRecyclerViewScrollListener(lManager) {
             @Override
