@@ -29,6 +29,8 @@
         android:layout_below="@+id/tvScreenName"
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
+        android:autoLink="all"
+        android:linksClickable="true"
         android:layout_toEndOf="@+id/ivProfileImage"
         tools:text="This is my tweet!!" />
 

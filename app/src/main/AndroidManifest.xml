@@ -13,8 +13,10 @@
         android:icon="@drawable/ic_launcher_twitter_round"
         android:label=""
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        >
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".DetailedView"
+            android:exported="false" />
         <activity
             android:name=".ComposeActivity"
             android:exported="false" />
