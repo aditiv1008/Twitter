@@ -6,6 +6,24 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp">
 
+    <ImageButton
+        android:id="@+id/ibFavorite"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/ivPostedPicture"
+        android:layout_alignParentBottom="true"
+        app:srcCompat="@android:drawable/btn_star_big_off" />
+
+    <TextView
+        android:id="@+id/tvFavoriteCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ibFavorite"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="9dp"
+        android:layout_toRightOf="@+id/ibFavorite"
+        android:text="0" />
+
     <ImageView
         android:id="@+id/ivProfileImage"
         android:layout_width="50dp"
@@ -29,9 +47,9 @@
         android:layout_below="@+id/tvScreenName"
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
         android:autoLink="all"
         android:linksClickable="true"
-        android:layout_toEndOf="@+id/ivProfileImage"
         tools:text="This is my tweet!!" />
 
     <ImageView

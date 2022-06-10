@@ -52,7 +52,7 @@ public class TimelineActivity extends AppCompatActivity {
         LinearLayoutManager lManager = new LinearLayoutManager(this);
 
         //Recyler view setup: layout manager and the adapter
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        rvTweets.setLayoutManager(lManager);
         rvTweets.setAdapter(adapter);
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -82,13 +82,47 @@ public class TimelineActivity extends AppCompatActivity {
       getSupportActionBar().setLogo(R.drawable.transparent2);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        fetchTimelineAsync(0);
         rvScrollListener = new EndlessRecyclerViewScrollListener(lManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-
+                Log.i(TAG, String.valueOf(page));
+                long tweetId = tweets.get(tweets.size() - 1).id;
+                loadNextDataFromApi(tweetId);
             }
         };
+        rvTweets.addOnScrollListener(rvScrollListener);
+
+        fetchTimelineAsync(0);
+
+    }
+    public void loadNextDataFromApi(long offset) {
+        client.endlessHomeTimeline(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                try {
+                    tweets.addAll(Tweet.fromJsonArray(json.jsonArray));
+                    adapter.notifyDataSetChanged();
+                    Log.i(TAG, String.valueOf(offset));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                swipeContainer.setRefreshing(false);
+
+            }
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.d("DEBUG", "Fetch timeline error: " + throwable.toString());
+                swipeContainer.setRefreshing(false);
+
+            }
+
+
+        }, offset);
+        // Send an API request to retrieve appropriate paginated data
+        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+        //  --> Deserialize and construct new model objects from the API response
+        //  --> Append the new data objects to the existing set of items inside the array of items
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
     }
 
     public void fetchTimelineAsync(int page) {

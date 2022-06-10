@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,6 +73,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         ImageView ivPostedPicture;
         TextView tvTimeStamp;
+        TextView tvFavoriteCount;
+        ImageButton ibFavorite;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,9 +83,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             ivPostedPicture = itemView.findViewById(R.id.ivPostedPicture);
             tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
-
-
-
+            ibFavorite = itemView.findViewById(R.id.ibFavorite);
+            tvFavoriteCount = itemView.findViewById(R.id.tvFavoriteCount);
 
 
         }
@@ -93,15 +95,34 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName.setText((tweet.user.screenName));
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
 
-               if (tweet.media != "none") {
-                   ivPostedPicture.setVisibility(View.VISIBLE);
+            if (tweet.media != "none") {
+                ivPostedPicture.setVisibility(View.VISIBLE);
                 Glide.with(context).load(tweet.media).into(ivPostedPicture);
             } else {
-                   ivPostedPicture.setVisibility(View.GONE);
-               }
+                ivPostedPicture.setVisibility(View.GONE);
+            }
+            ibFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //if not already favorited
+                    // tell Twitter I want to favorite this
+                    //change drawable to btn_big_star_on
+                    //increment text inside tvFavoriteCount
 
+
+                    //else if already Favorited
+                        //tell Twitter I want to unfavorite this
+                        //change the drawable back to btn_star_big_off
+                        //decrement the text inside tvFavoriteCount
+
+
+
+
+
+                }
+            });
 
         }
     }
-
 }
+
