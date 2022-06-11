@@ -44,7 +44,8 @@ The following **additional** features are implemented:
 * [ ] List anything else that you can get done to improve the app functionality!
 
 ## Video Walkthrough
-![Kapture 2022-06-10 at 17 15 07](https://user-images.githubusercontent.com/76992852/173164859-610ec10d-12e1-4a08-b09e-e1c81adc1acf.gif)
+(https://user-images.githubusercontent.com/76992852/173164859-610ec10d-12e1-4a08-b09e-e1c81adc1acf.gif)
+![Kapture 2022-06-11 at 14 08 17](https://user-images.githubusercontent.com/76992852/173204932-1bc53ef3-d243-400b-bf7b-aaacf02cf874.gif)
 
 Here's a walkthrough of implemented user stories: 
 <img src='[[http://i.imgur.com/link/to/your/gif/file.gif](https://submissions.us-east-1.linodeobjects.com/metau_android/S1AdxwkD.gif
