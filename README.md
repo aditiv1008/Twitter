@@ -46,9 +46,9 @@ The following **additional** features are implemented:
 ## Video Walkthrough
 ![Kapture 2022-06-10 at 17 15 07](https://user-images.githubusercontent.com/76992852/173164859-610ec10d-12e1-4a08-b09e-e1c81adc1acf.gif)
 
-Here's a walkthrough of implemented user stories:
-
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+Here's a walkthrough of implemented user stories: 
+<img src='[[http://i.imgur.com/link/to/your/gif/file.gif](https://submissions.us-east-1.linodeobjects.com/metau_android/S1AdxwkD.gif
+](https://imgur.com/aVGF6hD)' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [Kap](https://getkap.co/).
 
